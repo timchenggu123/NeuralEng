@@ -10,9 +10,9 @@ y10 = 0;
 xy0=[x0; y0; x10; y10];
 
 %Define coupling parameters
-k1 = -0.4;
-k2 = -1.2;
-c = -0.2;
+k1 = 0.1;
+k2 = 0.2;
+c = 0.5;
 
 %Define time span
 tspan = [0 150];
@@ -40,7 +40,7 @@ plot(t_samp,v)
 % Set white noise generation
 rng('default')
 GWN_freq = samp_freq/2;
-GWN = randn(1,n_samples/2);
+GWN = randn(1,n_samples/2)*0.2;
 
 % Define options for the ODE solver
 opts = odeset('RelTol', 1e-6, 'AbsTol', 1e-8, 'MaxStep', 1e-3);
@@ -59,10 +59,11 @@ h = hamming(length(v));
 h = reshape(h,[1,length(h)]);
 x_fft = fft(GWN_upsample.*h);
 y_fft = fft(v.*h);
+freqspace = (1:length(t_samp)) .* samp_freq ./ length(t_samp);
 subplot(4,2,3);
-plot(t_samp, x_fft);
+plot(freqspace, x_fft);
 subplot(4,2,4);
-plot(t_samp, y_fft);
+plot(freqspace, y_fft);
 
 fprintf("max GWN bandwidth:\n");
 [val, idx] = max(abs(x_fft));
@@ -72,8 +73,8 @@ fprintf("max response bandwidth: \n");
 idx = samp_freq * idx / n_samples
 
 %compute the first order kernel
-%kernel1 = ifft(abs(y_fft)./abs(x_fft));
-kernel1 = lee_schetzen(GWN_upsample,v);
+kernel1 = ifft(abs(y_fft)./abs(x_fft));
+%kernel1 = lee_schetzen(GWN_upsample,v);
 figure(2);
 hold on
 title('First order kernel')
