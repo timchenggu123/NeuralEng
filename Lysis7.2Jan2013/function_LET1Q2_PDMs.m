@@ -23,7 +23,8 @@ subplot(212), plot((1:MM), sum_of_Sk, 'b', [1 MM], [0.9, 0.9], 'r--', 'linewidth
     axis([0.5 L+0.5 0.7 1.1]); set(gca, 'Xtick', (1:L+1)); drawnow
 
 % threshold for number of PDMs
-Npdms = input(['Enter a number of PDMs ' inputID ' ( <= ', num2str(L) '): ']); 
+% Npdms = input(['Enter a number of PDMs ' inputID ' ( <= ', num2str(L) '):
+Npdms=sum((Sk ./ sum(Sk)) > 0.01);
 if isempty(Npdms), 
     Npdms = 1; 
 end

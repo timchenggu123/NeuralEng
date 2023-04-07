@@ -34,7 +34,7 @@ end
 M = (-30 - log(1-alpha)) / log(alpha); 
 M = ceil(M);
 
-if L<=0 || L>9, 
+if L<=0 || L>20, 
     disp('L should be between 1 and 9, default vlaue L = 5'); 
     L = 5; 
 end
